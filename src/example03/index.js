@@ -21,10 +21,10 @@ let sourceCode = `
     func()
 `;
 
-sourceCode = prettier.format(sourceCode, {
-    semi: true,
-    parser: "babel"
-});
+// sourceCode = prettier.format(sourceCode, {
+//     semi: true,
+//     parser: "babel"
+// });
 
 const ast = parser.parse(sourceCode, {
     sourceType: 'unambiguous',
@@ -38,7 +38,7 @@ const {
         [compressPlugin]
     ],
     generatorOpts: {
-        comments: false,
+        comments: true,
         compact: true
     }
 });
