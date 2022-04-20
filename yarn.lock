@@ -158,7 +158,7 @@
 
 "@babel/template@^7.16.7":
   version "7.16.7"
-  resolved "http://npm.bailongma-inc.com/@babel%2ftemplate/-/template-7.16.7.tgz#8d126c8701fde4d66b264b3eba3d96f07666d155"
+  resolved "https://registry.npmmirror.com/@babel/template/-/template-7.16.7.tgz#8d126c8701fde4d66b264b3eba3d96f07666d155"
   integrity sha512-I8j/x8kHUrbYRTUxXrrMbfCa7jxkE7tZre39x3kjr9hvI82cK1FfqLygotcWN5kdPGWcLdWMHpSBavse5tWw3w==
   dependencies:
     "@babel/code-frame" "^7.16.7"

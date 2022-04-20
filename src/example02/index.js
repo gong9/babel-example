@@ -2,10 +2,11 @@ const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
 const types = require('@babel/types')
+const template =require('@babel/template')
 
 /**
  * 删除代码中的console
- * ! ast 节点的增删减查
+ * ! ast 节点节点的增加
  */
 
 
@@ -29,18 +30,23 @@ const ast = parser.parse(sourceCode, {
     sourceType: 'unambiguous',
     plugins: ['jsx']
 });
+const targetCalleeName = ['log', 'info', 'error', 'debug'].map(item => `console.${item}`);
 
 traverse(ast, {
     CallExpression(path, state) {
         // 找到目标，进行节点删除
-        if (types.isMemberExpression(path.node.callee) &&
-            path.node.callee.object.name === 'console' && ['log', 'info', 'error', 'debug'].includes(path.node.callee.property.name)
-        ) {
-            const {
-                line,
-                column
-            } = path.node.loc.start;
-            path.node.arguments.unshift(types.stringLiteral(`filename: (${line}, ${column})`))
+        if (path.node.isNew) return
+
+        const calleeName = generate(path.node.callee).code;
+        if (targetCalleeName.includes(calleeName)) {
+            const newNode = template.expression(`console.log("这是我刚加进去的")`)();
+            newNode.isNew = true;
+            if (path.findParent(path => path.isJSXElement())) {
+                path.replaceWith(types.arrayExpression([newNode, path.node]))
+                path.skip();
+            } else {
+                path.insertBefore(newNode);
+            }
         }
     }
 });
